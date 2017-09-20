@@ -1,0 +1,53 @@
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}" />
+</head>
+{% extends "app_base.html" %}
+{% block content %}
+    <form method="POST" action="search" style="max-width:400px; width:100%" enctype="multipart/form-data">
+        <div class="head-container" algin="left">
+            <h3>Search</h3>
+            <div class="well" align="left">
+                Anything not input will not be taken into account
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="itemID" class="col-sm-3 control-label" align="left">Item ID</label>
+            <input class="form-control" type="text" id="itemID" name="itemID">
+        </div>
+        <div class="form-group">
+            <label for="category" class="col-sm-3 control-label" align="left">Category</label>
+            <input class="form-control" type="text" id="category" name="category">
+        </div>
+        <div class="form-group">
+            <label for="description" class="col-sm-3 control-label" align="left">Description</label>
+            <input class="form-control" type="text" id="description" name="description">
+        </div>
+        <div class="form-group">
+            <label for="price" class="col-sm-3 control-label" align="left">Price</label>
+            <input class="form-control" type="text" id="price" name="price">
+        </div>
+        <div class="form-group">
+            <label for="status" class="col-sm-3 control-label" align="left">Status</label>
+            <label class="radio-inline">
+                <input type="radio" id="open" name="status" value="open">Open
+            </label>
+            <label class="radio-inline">
+                <input type="radio" id="close" name="status" value="close">Close
+            </label>
+            <label class="radio-inline">
+                <input type="radio" id="not_started" name="status" value="not_started">Not Started
+            </label>
+            <label class="radio-inline">
+                <input type="radio" id="all" name="status" value="all" checked>All
+            </label>
+        </div>
+        <div class="form-group" align="left">
+            <input class="btn btn-primary" type="submit" value="Start Searching!">
+        </div>
+    </form>
+    {% if results is defined %}
+        {% for result in results %}
+            <span>{{ result[0], result[1], result[8] }}</span><br>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
