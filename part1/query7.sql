@@ -1,0 +1,1 @@
+Select Count(*) From (Select Distinct Categories.Category From Categories, Bids Where Categories.ItemID = Bids.ItemID and Bids.Amount > 100.00);

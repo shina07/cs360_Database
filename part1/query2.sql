@@ -1,0 +1,1 @@
+Select Count(*) From Users Where Location = "New York";

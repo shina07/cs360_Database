@@ -1,0 +1,1 @@
+Select ItemID From Items Where Currently = (Select Max(FirstBid) From Items);

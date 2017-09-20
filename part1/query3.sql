@@ -1,0 +1,1 @@
+Select Count(*) From (Select Count(Category) as category_count From Categories Group By ItemID Having category_count = 4);
