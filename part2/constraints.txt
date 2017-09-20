@@ -1,0 +1,80 @@
+
+ Constraints for Users
+
+1. No two users can share the same User ID.
+	Key Constraint : create.sql에서 Users테이블의 UserID Column 이 Primary Key로 선언되었다.
+
+
+2. All sellers and bidders must already exist as users.
+ Constraints for Items
+	Key Constraint : create.sql에서 Items테이블의 SellerID와 Bids테이블의 UserID 가 Users테이블의 UserID를 Foreign Key로 referencing 하고 있다.
+
+
+3. No two items can share the same Item ID.
+	Key Constraint : create.sql에서 Items테이블의 ItemID Column 이 Primary Key로 선언되었다.
+
+
+4. Every bid must correspond to an actual item.
+	Key Constraint : create.sql에서 Bids테이블의 ItemID가 Items테이블의 ItemID를 Foreign Key로 referencing하고 있다.
+
+
+5. The items for a given category must all exist.
+	Key Constraint : create.sql에서 Categories테이블의 ItemID가 Items테이블의 ItemID를 Foreign Key로 referencing하고 있다.
+
+
+6. An item cannot belong to a particular category more than once.
+	Unique Constraint : create.sql에서 Categories테이블의 ItemID 와 Category 페어가 Unique하도록 설정하였다.
+
+
+7. The end time for an auction must always be after its start time.
+	Insert Trigger -> Trigger1
+	Started Column의 값이 항상 Ends보다 크도록 트리거를 설정하였다.
+
+
+8. The Current Price of an item must always match the Amount of the most recent bid for that item.
+	Insert Trigger -> Trigger2
+	Bids 테이블에 Insert를 하는 과정에서, 만약 Items테이블 내의 Item의 Currently값이 가장 최신의 Bid 가격과 맞지 않으면 해당 Item의 Currently가격을 업데이트 하도록 트리거를 설정하엿다.  
+
+
+
+ Constraints for Bidding
+
+9. A user may not bid on an item he or she is also selling.
+	Insert Trigger -> Trigger3
+	Bids 테이블에 Insert를 하는 과정에서, Items테이블의 SellerID와 추가된 Bis의 UserID가 같지 않도록 트리거를 설정하였다.
+
+
+10. No auction may have two bids at the exact same time.
+	Unique Constraint : create.sql에서 Bids 테이블의 ItemID와 Time의 페어가 Unique 하도록 설정하였다.
+
+
+11. No auction may have a bid before its start time or after its end time.
+	Insert Trigger -> Trigger4
+	Bids 테이블에 Insert를 하는 과정에서, 추가된 Bid의 Time이 Started이상이고 Ends이하가 되도록 트리거를 설정하였다.
+
+
+12. No user can make a bid of the same amount to the same item more than once.
+	Unique Constraint : create.sql에서 UserID, ItemID와 Amount엔트리 값이 항상 Unique하도록 설정하였다.
+
+
+13. In every auction, the Number of Bids attribute corresponds to the actual number of bids for that particular item.
+	Insert Trigger -> Trigger5
+	Bids 테이블에 Insert를 하는 과정에서, 해당 Bid가 추가됨으로서 그 Bid된 Item의 NumOFBids를 같이 증가시켜 주도록 트리거를 설정하였다.
+
+
+14. Any new bid for a particular item must have a higher amount than any of the
+previous bids for that particular item.
+	Insert Trigger -> Trigger6
+	Bids 테이블에 Insert를 하는 과정에서, 해당 Bid의 Item의 최대 가격보다 더 큰 가격의 Bid만 추가되도록 트리거를 설정하였다
+
+
+ Constraints for Time
+
+15. All new bids must be placed at the time which matches the current time of your AuctionBase system.
+	Insert Trigger -> Trigger7
+	Bids 테이블에 Insert를 하는 과정에서, 해당 Bid의 Time이 CurrentTime테이블의 가장 최신 값과 같을 때만 Insert가 되도록 트리거를 설정하였다.
+
+
+16. The current time of your AuctionBase system can only advance forward in time, not backward in time.
+	Insert Trigger -> Trigger8
+	CurrentTime테이블에 시간을 추가할 때 무조건 시간이 증가해야만 추가가 되도록 트리거를 추가하였다. 
